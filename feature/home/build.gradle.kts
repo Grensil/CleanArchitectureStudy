@@ -1,21 +1,19 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "com.grensil.cleanarchitecturestudy"
-    compileSdk = 35
+    namespace = "com.grensil.home"
+    compileSdk = Versions.COMPILE_SDK_VERSION
 
     defaultConfig {
-        applicationId = "com.grensil.cleanarchitecturestudy"
-        minSdk = 24
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = Versions.MIN_SDK_VERSION
+        targetSdk = Versions.TARGET_SDK_VERSION
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -32,83 +30,76 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.0"
+    }
+    packagingOptions {
+        exclude("META-INF/gradle/incremental.annotation.processors")
+    }
 }
 
 dependencies {
-    implementation(project(":feature:home"))
     implementation(project(":core:domain"))
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(AndroidX.CORE_KTX)
     implementation(AndroidX.APP_COMPAT)
     implementation(AndroidX.LIFECYCLE_RUNTIME_KTX)
     implementation(AndroidX.LIFECYCLE_VIEWMODEL_KTX)
 
-    //Activity extension, referring with  "by viewModels"
+//Activity extension, referring with  "by viewModels"
     implementation(AndroidX.ACTIVITY_KTX)
 
-    //retrofit + gson
+//retrofit + gson
     implementation(Libraries.RETROFIT)
     implementation(Libraries.RETROFIT_CONVERTER_GSON)
 
-    //okhttp
+//okhttp
     implementation(Libraries.OKHTTP)
     implementation(Libraries.OKHTTP_LOGGING_INTERCEPTOR)
 
-    //Coroutines
+//Coroutines
     implementation(Kotlin.COROUTINES_ANDROID)
 
-    //Hilt
+//Hilt
     implementation(Google.HILT_ANDROID)
     //implementation(Google.HILT_ANDROID_COMPILER)
 
-    //compose coil
+//compose coil
     implementation(Libraries.COIL)
+    implementation(Libraries.COIL_COMPOSE)
 
-    //hilt
+//hilt
     implementation(Google.HILT_COMPOSE)
     implementation(Google.NAVIGATION_COMPOSE)
 
-    //compose
+//compose
     implementation(platform("androidx.compose:compose-bom:2023.01.00"))
 
     implementation(Compose.COMPOSE_UI)
-    implementation(Compose.COMPOSE_ANIMATION)
     implementation(Compose.COMPOSE_MATERIAL)
-    implementation(Compose.COMPOSE_MATERIAL_3)
     implementation(Compose.COMPOSE_MATERIAL_ICON_EXTENDED)
     implementation(Compose.COMPOSE_LIFECYCLE_RUNTIME)
     implementation(Compose.COMPOSE_UI_TOOLING_PREVIEW)
-    debugImplementation(Compose.COMPOSE_UI_TOOLING_DEBUG)
+    implementation(Compose.COMPOSE_UI_TOOLING_DEBUG)
 
     implementation(Compose.COMPOSE_LIFECYCLE_RUNTIME)
     implementation(Compose.COMPOSE_ACTIVITY)
+    implementation(libs.androidx.runtime.android)
 
-    implementation(Accompanist.NAVIGATION_ANIMATION)
+//unittest
+    testImplementation(UnitTest.JUNIT)
+    testImplementation(UnitTest.MOCKK)
+    testImplementation(UnitTest.KOTLIN_TEST)
+    testImplementation(UnitTest.KOTLIN_TEST_JUNIT)
+    testImplementation(UnitTest.CORE_TESTING)
+    testImplementation(UnitTest.COROUTINE_TEST)
+    implementation(UnitTest.ANDROID_JUNIT_EXT)
 }
-
 
 object Versions {
     //kotlin
@@ -154,19 +145,23 @@ object Versions {
 }
 
 object Kotlin {
-    const val KOTLIN_STDLIB      = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN_VERSION}"
-    const val COROUTINES_CORE    = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.KOTLINX_COROUTINES}"
-    const val COROUTINES_ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.KOTLINX_COROUTINES}"
+    const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN_VERSION}"
+    const val COROUTINES_CORE =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.KOTLINX_COROUTINES}"
+    const val COROUTINES_ANDROID =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.KOTLINX_COROUTINES}"
 }
 
 object AndroidX {
-    const val CORE_KTX                = "androidx.core:core-ktx:${Versions.CORE_KTX}"
-    const val APP_COMPAT              = "androidx.appcompat:appcompat:${Versions.APP_COMPAT}"
+    const val CORE_KTX = "androidx.core:core-ktx:${Versions.CORE_KTX}"
+    const val APP_COMPAT = "androidx.appcompat:appcompat:${Versions.APP_COMPAT}"
 
-    const val ACTIVITY_KTX            = "androidx.activity:activity-ktx:${Versions.ACTIVITY_KTX}"
+    const val ACTIVITY_KTX = "androidx.activity:activity-ktx:${Versions.ACTIVITY_KTX}"
 
-    const val LIFECYCLE_VIEWMODEL_KTX = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.LIFECYCLE_KTX}"
-    const val LIFECYCLE_RUNTIME_KTX  = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE_KTX}"
+    const val LIFECYCLE_VIEWMODEL_KTX =
+        "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.LIFECYCLE_KTX}"
+    const val LIFECYCLE_RUNTIME_KTX =
+        "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE_KTX}"
 
     const val PREFERENCE = "androidx.preference:preference-ktx:${Versions.PREFERENCE}"
 
@@ -176,7 +171,7 @@ object AndroidX {
 }
 
 object Google {
-    const val HILT_ANDROID          = "com.google.dagger:hilt-android:${Versions.HILT}"
+    const val HILT_ANDROID = "com.google.dagger:hilt-android:${Versions.HILT}"
     const val HILT_ANDROID_COMPILER = "com.google.dagger:hilt-android-compiler:${Versions.HILT}"
 
     const val HILT_COMPOSE = "androidx.hilt:hilt-navigation-compose:1.0.0"
@@ -185,11 +180,12 @@ object Google {
 }
 
 object Libraries {
-    const val RETROFIT                   = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT}"
-    const val RETROFIT_CONVERTER_GSON    = "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT}"
+    const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT}"
+    const val RETROFIT_CONVERTER_GSON = "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT}"
 
-    const val OKHTTP                     = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP}"
-    const val OKHTTP_LOGGING_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${Versions.OKHTTP_LOGGING_INTERCEPTOR}"
+    const val OKHTTP = "com.squareup.okhttp3:okhttp:${Versions.OKHTTP}"
+    const val OKHTTP_LOGGING_INTERCEPTOR =
+        "com.squareup.okhttp3:logging-interceptor:${Versions.OKHTTP_LOGGING_INTERCEPTOR}"
     const val OKHTTP_URLCONNECTION = "com.squareup.okhttp3:okhttp-urlconnection:${Versions.OKHTTP}"
 
     const val COIL = "io.coil-kt:coil:${Versions.COIL}"
@@ -201,10 +197,12 @@ object UnitTest {
     const val JUNIT = "junit:junit:${Versions.JUNIT}"
     const val MOCKK = "io.mockk:mockk:${Versions.MOCKK}"
     const val KOTLIN_TEST = "org.jetbrains.kotlin:kotlin-test:${Versions.KOTLIN_TEST}"
-    const val KOTLIN_TEST_JUNIT = "org.jetbrains.kotlin:kotlin-test-junit:${Versions.KOTLIN_TEST_JUNIT}"
+    const val KOTLIN_TEST_JUNIT =
+        "org.jetbrains.kotlin:kotlin-test-junit:${Versions.KOTLIN_TEST_JUNIT}"
     const val CORE_TESTING = "androidx.arch.core:core-testing:${Versions.CORE_TESTING}"
     const val ANDROID_JUNIT_EXT = "androidx.test.ext:junit:${Versions.ANDROID_JUNIT_EXT}"
-    const val COROUTINE_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.KOTLINX_COROUTINES}"
+    const val COROUTINE_TEST =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.KOTLINX_COROUTINES}"
 }
 
 object AndroidTest {
@@ -221,10 +219,12 @@ object Compose {
     const val COMPOSE_UI_TOOLING_PREVIEW = "androidx.compose.ui:ui-tooling-preview"
     const val COMPOSE_UI_TOOLING_DEBUG = "androidx.compose.ui:ui-tooling"
 
-    const val COMPOSE_LIFECYCLE_RUNTIME = "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha01"
+    const val COMPOSE_LIFECYCLE_RUNTIME =
+        "androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha01"
     const val COMPOSE_ACTIVITY = "androidx.activity:activity-compose:1.5.1"
 }
 
 object Accompanist {
-    const val NAVIGATION_ANIMATION = "com.google.accompanist:accompanist-navigation-animation:0.31.1-alpha"
+    const val NAVIGATION_ANIMATION =
+        "com.google.accompanist:accompanist-navigation-animation:0.31.1-alpha"
 }

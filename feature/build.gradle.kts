@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.grensil.data"
+    namespace = "com.grensil.home"
     compileSdk = 35
 
     defaultConfig {

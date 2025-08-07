@@ -23,3 +23,6 @@ rootProject.name = "CleanArchitectureStudy"
 include(":app")
 include(":core")
 include(":core:data")
+include(":core:domain")
+include(":feature")
+include(":feature:home")

@@ -1,21 +1,17 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "com.grensil.cleanarchitecturestudy"
+    namespace = "com.grensil.data"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.grensil.cleanarchitecturestudy"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -34,79 +30,30 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
-    implementation(project(":feature:home"))
-    implementation(project(":core:domain"))
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(AndroidX.CORE_KTX)
-    implementation(AndroidX.APP_COMPAT)
-    implementation(AndroidX.LIFECYCLE_RUNTIME_KTX)
-    implementation(AndroidX.LIFECYCLE_VIEWMODEL_KTX)
 
-    //Activity extension, referring with  "by viewModels"
-    implementation(AndroidX.ACTIVITY_KTX)
-
-    //retrofit + gson
-    implementation(Libraries.RETROFIT)
-    implementation(Libraries.RETROFIT_CONVERTER_GSON)
-
-    //okhttp
-    implementation(Libraries.OKHTTP)
-    implementation(Libraries.OKHTTP_LOGGING_INTERCEPTOR)
+    //kotlin
+    implementation(Kotlin.KOTLIN_STDLIB)
 
     //Coroutines
     implementation(Kotlin.COROUTINES_ANDROID)
 
-    //Hilt
-    implementation(Google.HILT_ANDROID)
-    //implementation(Google.HILT_ANDROID_COMPILER)
+    //retrofit
+    implementation(Libraries.RETROFIT)
+    implementation(Libraries.RETROFIT_CONVERTER_GSON)
 
-    //compose coil
-    implementation(Libraries.COIL)
+    //okHttp
+    implementation(Libraries.OKHTTP)
+    implementation(Libraries.OKHTTP_LOGGING_INTERCEPTOR)
+    implementation(Libraries.OKHTTP_URLCONNECTION)
 
     //hilt
-    implementation(Google.HILT_COMPOSE)
-    implementation(Google.NAVIGATION_COMPOSE)
-
-    //compose
-    implementation(platform("androidx.compose:compose-bom:2023.01.00"))
-
-    implementation(Compose.COMPOSE_UI)
-    implementation(Compose.COMPOSE_ANIMATION)
-    implementation(Compose.COMPOSE_MATERIAL)
-    implementation(Compose.COMPOSE_MATERIAL_3)
-    implementation(Compose.COMPOSE_MATERIAL_ICON_EXTENDED)
-    implementation(Compose.COMPOSE_LIFECYCLE_RUNTIME)
-    implementation(Compose.COMPOSE_UI_TOOLING_PREVIEW)
-    debugImplementation(Compose.COMPOSE_UI_TOOLING_DEBUG)
-
-    implementation(Compose.COMPOSE_LIFECYCLE_RUNTIME)
-    implementation(Compose.COMPOSE_ACTIVITY)
-
-    implementation(Accompanist.NAVIGATION_ANIMATION)
+    implementation(Google.HILT_ANDROID)
+    //implementation(Google.HILT_ANDROID_COMPILER)
 }
 
 
