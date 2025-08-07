@@ -1,12 +1,21 @@
 package com.grensil.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class AnimeListResponse(
-    var success : Boolean? = null,
-    var data : List<AnimeData>? = null
+    val data: List<AnimeItem>
 )
 
-data class AnimeData(
-    var anime_id: Int? = null,
-    var anime_name: String? = null,
-    var anime_img: String? = null
+data class AnimeItem(
+    @SerializedName("mal_id") val id: Int,
+    val title: String,
+    val images: AnimeImages
+)
+
+data class AnimeImages(
+    val jpg: AnimeJpg
+)
+
+data class AnimeJpg(
+    @SerializedName("image_url") val imageUrl: String
 )

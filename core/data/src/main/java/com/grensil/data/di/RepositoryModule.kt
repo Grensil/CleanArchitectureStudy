@@ -1,6 +1,8 @@
 package com.grensil.data.di
 
 import com.grensil.data.repository.AnimeRepositoryImpl
+import com.grensil.domain.repository.AnimeRepository
+
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

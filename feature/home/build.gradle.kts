@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    kotlin("kapt") // 추가
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -67,7 +70,7 @@ dependencies {
 
 //Hilt
     implementation(Google.HILT_ANDROID)
-    //implementation(Google.HILT_ANDROID_COMPILER)
+    kapt(Google.HILT_ANDROID_COMPILER)
 
 //compose coil
     implementation(Libraries.COIL)
@@ -107,9 +110,9 @@ object Versions {
     const val KOTLINX_COROUTINES = "1.5.2"
 
     //build
-    const val COMPILE_SDK_VERSION = 33
+    const val COMPILE_SDK_VERSION = 35
     const val MIN_SDK_VERSION = 23
-    const val TARGET_SDK_VERSION = 33
+    const val TARGET_SDK_VERSION = 35
     const val VERSION_CODE = 1
     const val VERSION_NAME = "1.0.0"
 
@@ -123,7 +126,7 @@ object Versions {
     const val KAPT_HILT = "1.0.0-alpha02"
 
     //google
-    const val HILT = "2.45"
+    const val HILT = "2.48"
     const val DATASTORE = "1.0.0"
 
     //libraries

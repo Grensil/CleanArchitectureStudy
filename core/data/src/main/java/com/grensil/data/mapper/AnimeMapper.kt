@@ -1,15 +1,15 @@
 package com.grensil.data.mapper
 
-import com.grensil.data.model.AnimeData
+
+import com.grensil.data.model.AnimeItem
 import com.grensil.data.model.AnimeListResponse
 import com.grensil.domain.entity.AnimeEntity
 
 
-fun AnimeData.toAnimeEntity(): AnimeEntity {
-
+fun AnimeItem.toAnimeEntity(): AnimeEntity {
     return AnimeEntity(
-        anime_id = this.anime_id,
-        anime_name = this.anime_name,
-        anime_img = this.anime_img
+        anime_id = this.id,
+        anime_name = this.title,
+        anime_img = this.images.jpg.imageUrl
     )
 }

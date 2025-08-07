@@ -1,0 +1,18 @@
+package com.grensil.data.di
+
+import com.grensil.data.datasource.AnimeRemoteDataSource
+import com.grensil.data.datasource.AnimeRemoteDataSourceImpl
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface DataSourceModule {
+
+    @Binds
+    fun bindsAnimeRemoteDataSource(
+        animeRemoteSource: AnimeRemoteDataSourceImpl
+    ): AnimeRemoteDataSource
+}

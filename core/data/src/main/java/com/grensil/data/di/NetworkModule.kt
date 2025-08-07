@@ -17,7 +17,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    val BASE_URL = "https://anime-facts-rest-api.herokuapp.com/"
+    val BASE_URL = "https://api.jikan.moe/v4/"
 
     @Singleton
     @Provides
