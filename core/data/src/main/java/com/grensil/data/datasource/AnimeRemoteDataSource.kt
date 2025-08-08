@@ -1,7 +1,9 @@
 package com.grensil.data.datasource
 
-import com.grensil.data.model.AnimeListResponse
+import com.grensil.data.model.remote.AnimeItem
+import com.grensil.data.model.remote.AnimeListResponse
+import kotlinx.coroutines.flow.Flow
 
 interface AnimeRemoteDataSource {
-    suspend fun getAnimeList(): AnimeListResponse
+    fun getAnimeList(): Flow<List<AnimeItem>>
 }

@@ -14,8 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,7 +33,7 @@ import coil.compose.rememberAsyncImagePainter
 
 
 @Composable
-fun AnimeListScreen(viewModel: AnimeListViewModel = hiltViewModel()) {
+fun HomeScreen(viewModel: AnimeListViewModel = hiltViewModel()) {
 
     val insets = WindowInsets.statusBars.asPaddingValues()
     val statusBarHeight = with(LocalDensity.current) { insets.calculateTopPadding() }
@@ -65,6 +66,15 @@ fun AnimeListScreen(viewModel: AnimeListViewModel = hiltViewModel()) {
                         color = Color.Black,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1)
+
+                    Spacer(modifier = Modifier.width(16.dp).fillMaxHeight())
+
+                    Image(
+                        modifier = Modifier.size(40.dp),
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop
+                    )
 
                     Spacer(modifier = Modifier.width(16.dp).fillMaxHeight())
                 }

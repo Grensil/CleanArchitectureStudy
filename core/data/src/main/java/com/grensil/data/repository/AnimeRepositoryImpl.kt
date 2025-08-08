@@ -2,21 +2,32 @@ package com.grensil.data.repository
 
 import com.grensil.data.datasource.AnimeLocalDataSource
 import com.grensil.data.datasource.AnimeRemoteDataSource
-import com.grensil.data.mapper.toAnimeEntity
-import com.grensil.domain.entity.AnimeEntity
+import com.grensil.data.mapper.toAnimeDto
+import com.grensil.domain.dto.AnimeDto
 import com.grensil.domain.repository.AnimeRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AnimeRepositoryImpl @Inject constructor(
-    private val remoteDataSource: AnimeRemoteDataSource
+    private val remoteDataSource: AnimeRemoteDataSource,
+    private val localDataSource: AnimeLocalDataSource
 ) : AnimeRepository {
 
-    override fun getAnimeList(): Flow<List<AnimeEntity>> = flow {
-        val response = remoteDataSource.getAnimeList().data?.map { it.toAnimeEntity() }
-        emit(response ?: emptyList())
+    override fun getAnimeList(): Flow<List<AnimeDto>> {
+        return combine(
+            remoteDataSource.getAnimeList(),
+            localDataSource.getBookmarkList()
+        ) { remoteList, localList ->
+            val transRemoteList = remoteList.map { it.toAnimeDto() }
+            val transLocalList = localList.map { it.toAnimeDto() }
+
+            transRemoteList.map { anime ->
+                anime.copy(bookmarked = transLocalList.any { it.anime_id == anime.anime_id })
+            }
+        }
     }
 }

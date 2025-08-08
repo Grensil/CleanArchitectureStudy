@@ -1,4 +1,4 @@
-package com.grensil.data.model
+package com.grensil.data.model.remote
 
 import com.google.gson.annotations.SerializedName
 

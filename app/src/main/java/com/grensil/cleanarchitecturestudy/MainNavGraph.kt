@@ -1,6 +1,5 @@
 package com.grensil.cleanarchitecturestudy
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,10 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.grensil.home.AnimeListScreen
-
-
-
+import com.grensil.home.HomeScreen
 
 @Composable
 fun MainScreen() {
@@ -34,10 +30,7 @@ fun MainScreen() {
         modifier = Modifier.fillMaxSize(),
         bottomBar = { BottomNavigation(navController = navController) }
     ) { innerPadding ->
-        Box(
-            Modifier
-                .fillMaxSize().padding(bottom = innerPadding.calculateBottomPadding())
-        ) {
+        Box(Modifier.fillMaxSize().padding(bottom = innerPadding.calculateBottomPadding())) {
             MainNavGraph(
                 navController = navController
             )
@@ -93,7 +86,7 @@ fun MainNavGraph(navController: NavHostController) {
         startDestination = TabScreen.Home.route
     ) {
         composable(TabScreen.Home.route) {
-            AnimeListScreen()
+            HomeScreen()
         }
         composable(TabScreen.Search.route) {
             //SearchScreen(navController)

@@ -1,5 +1,7 @@
 package com.grensil.data.di
 
+import com.grensil.data.datasource.AnimeLocalDataSource
+import com.grensil.data.datasource.AnimeLocalDataSourceImpl
 import com.grensil.data.datasource.AnimeRemoteDataSource
 import com.grensil.data.datasource.AnimeRemoteDataSourceImpl
 import dagger.Binds
@@ -15,4 +17,9 @@ interface DataSourceModule {
     fun bindsAnimeRemoteDataSource(
         animeRemoteSource: AnimeRemoteDataSourceImpl
     ): AnimeRemoteDataSource
+
+    @Binds
+    fun bindsAnimeLocalDataSource(
+        animeLocalSource: AnimeLocalDataSourceImpl
+    ): AnimeLocalDataSource
 }
