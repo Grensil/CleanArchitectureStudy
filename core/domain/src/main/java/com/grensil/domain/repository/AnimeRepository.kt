@@ -9,5 +9,5 @@ interface AnimeRepository {
     suspend fun getBookmarkList() : Flow<List<AnimeDto>>
     suspend fun removeAnimeList()
     suspend fun addBookmark(animeDto : AnimeDto)
-    suspend fun removeBookmark(animeId : String)
+    suspend fun removeBookmark(animeId : Int)
 }

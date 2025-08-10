@@ -25,7 +25,7 @@ class AnimeLocalDataSourceImpl @Inject constructor(
         dao.insertBookmark(animeDto)
     }
 
-    override suspend fun removeBookmark(animeId: String) {
+    override suspend fun removeBookmark(animeId: Int) {
         dao.deleteBookmarkById(animeId)
     }
 

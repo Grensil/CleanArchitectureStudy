@@ -8,5 +8,5 @@ interface AnimeLocalDataSource {
     fun getBookmarkList(): Flow<List<FavoriteAnimeEntity>>
     suspend fun removeAnimeList()
     suspend fun addBookmark(animeDto : FavoriteAnimeEntity)
-    suspend fun removeBookmark(animeId : String)
+    suspend fun removeBookmark(animeId : Int)
 }

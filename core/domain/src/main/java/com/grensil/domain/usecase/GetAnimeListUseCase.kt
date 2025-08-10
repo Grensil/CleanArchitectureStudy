@@ -24,7 +24,7 @@ class GetAnimeListUseCase @Inject constructor(
         localAnimeRepository.addBookmark(animeDto)
     }
 
-    suspend fun removeBookmark(animeId: String) {
+    suspend fun removeBookmark(animeId: Int) {
         localAnimeRepository.removeBookmark(animeId)
     }
 

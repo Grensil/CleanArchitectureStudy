@@ -48,7 +48,7 @@ class AnimeRepositoryImpl @Inject constructor(
         localDataSource.addBookmark(animeDto.toFavoriteAnimeEntity())
     }
 
-    override suspend fun removeBookmark(animeId: String) {
+    override suspend fun removeBookmark(animeId: Int) {
         localDataSource.removeBookmark(animeId)
     }
 

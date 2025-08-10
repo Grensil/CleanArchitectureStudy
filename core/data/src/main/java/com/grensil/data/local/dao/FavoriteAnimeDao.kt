@@ -23,8 +23,8 @@ interface FavoriteAnimeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBookmark(anime: FavoriteAnimeEntity)
 
-    @Query("DELETE FROM favorite_anime WHERE id = :animeId")
-    suspend fun deleteBookmarkById(animeId: String)
+    @Query("DELETE FROM favorite_anime WHERE animeId = :animeId")
+    suspend fun deleteBookmarkById(animeId: Int)
 
     @Delete
     suspend fun deleteBookmark(anime: FavoriteAnimeEntity)

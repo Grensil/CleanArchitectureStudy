@@ -1,5 +1,6 @@
 package com.grensil.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.grensil.domain.dto.AnimeDto
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -47,6 +49,7 @@ fun HomeScreen(viewModel: AnimeListViewModel = hiltViewModel()) {
     val animeList by viewModel.animeList.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
+        viewModel.deleteAllBookmark()
         viewModel.getAnimeList()
     }
 
@@ -55,7 +58,12 @@ fun HomeScreen(viewModel: AnimeListViewModel = hiltViewModel()) {
             items(animeList.size) {
                 AnimeItemView(animeData = animeList[it],
                     onBookmark = { animeDto ->
-                        viewModel.insertBookmark(animeDto)
+                        if(animeDto.bookmarked == true) {
+                            viewModel.deleteBookmark(animeDto.anime_id)
+                        }
+                        else {
+                            viewModel.insertBookmark(animeDto)
+                        }
                     })
             }
         }
