@@ -3,11 +3,14 @@ package com.grensil.data.repository
 import com.grensil.data.datasource.AnimeLocalDataSource
 import com.grensil.data.datasource.AnimeRemoteDataSource
 import com.grensil.data.mapper.toAnimeDto
+import com.grensil.data.mapper.toFavoriteAnimeEntity
 import com.grensil.domain.dto.AnimeDto
+import com.grensil.domain.dto.FavoriteAnimeDto
 import com.grensil.domain.repository.AnimeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,7 +20,7 @@ class AnimeRepositoryImpl @Inject constructor(
     private val localDataSource: AnimeLocalDataSource
 ) : AnimeRepository {
 
-    override fun getAnimeList(): Flow<List<AnimeDto>> {
+    override suspend fun getAnimeList(): Flow<List<AnimeDto>> {
         return combine(
             remoteDataSource.getAnimeList(),
             localDataSource.getBookmarkList()
@@ -30,4 +33,24 @@ class AnimeRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun getBookmarkList(): Flow<List<AnimeDto>> {
+        return localDataSource.getBookmarkList().map { list ->
+            list.map { it.toAnimeDto() }
+        }
+    }
+
+    override suspend fun removeAnimeList() {
+        localDataSource.getBookmarkList()
+    }
+
+    override suspend fun addBookmark(animeDto: AnimeDto) {
+        localDataSource.addBookmark(animeDto.toFavoriteAnimeEntity())
+    }
+
+    override suspend fun removeBookmark(animeId: String) {
+        localDataSource.removeBookmark(animeId)
+    }
+
+
 }

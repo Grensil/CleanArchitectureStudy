@@ -1,6 +1,7 @@
 package com.grensil.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -52,18 +53,24 @@ fun HomeScreen(viewModel: AnimeListViewModel = hiltViewModel()) {
     Column(modifier = Modifier.fillMaxSize()) {
         LazyColumn() {
             items(animeList.size) {
-                AnimeItemView(animeList[it])
+                AnimeItemView(animeData = animeList[it],
+                    onBookmark = { animeDto ->
+                        viewModel.insertBookmark(animeDto)
+                    })
             }
         }
     }
 }
 
 @Composable
-fun AnimeItemView(animeData: AnimeDto) {
+fun AnimeItemView(animeData: AnimeDto, onBookmark : (AnimeDto) -> Unit) {
 
     Row(modifier = Modifier
         .fillMaxWidth()
-        .height(40.dp), verticalAlignment = Alignment.CenterVertically) {
+        .height(40.dp)
+        .clickable {
+            onBookmark(animeData)
+        }, verticalAlignment = Alignment.CenterVertically) {
         Image(modifier = Modifier.size(40.dp),
             painter = rememberAsyncImagePainter(animeData.anime_img),
             contentDescription = null,
@@ -82,7 +89,7 @@ fun AnimeItemView(animeData: AnimeDto) {
 
         Image(
             modifier = Modifier.size(32.dp),
-            imageVector = if(animeData.bookmarked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+            imageVector = if(animeData.bookmarked == true) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )

@@ -3,10 +3,10 @@ package com.grensil.data.model
 import com.google.gson.annotations.SerializedName
 
 data class AnimeListResponse(
-    val data: List<AnimeItem>
+    val data: List<AnimeEntity>
 )
 
-data class AnimeItem(
+data class AnimeEntity(
     @SerializedName("mal_id") val id: Int,
     val title: String,
     val images: AnimeImages

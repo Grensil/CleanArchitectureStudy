@@ -17,4 +17,16 @@ class AnimeLocalDataSourceImpl @Inject constructor(
         return dao.getAllFavorites()
     }
 
+    override suspend fun removeAnimeList() {
+        dao.deleteAllBookmarks()
+    }
+
+    override suspend fun addBookmark(animeDto: FavoriteAnimeEntity) {
+        dao.insertBookmark(animeDto)
+    }
+
+    override suspend fun removeBookmark(animeId: String) {
+        dao.deleteBookmarkById(animeId)
+    }
+
 }

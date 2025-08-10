@@ -17,9 +17,15 @@ interface FavoriteAnimeDao {
     @Query("SELECT * FROM favorite_anime ORDER BY addedAt DESC")
     fun getAllFavorites(): Flow<List<FavoriteAnimeEntity>>
 
+    @Query("DELETE FROM favorite_anime")
+    suspend fun deleteAllBookmarks()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBookmark(bookmark: FavoriteAnimeEntity)
+    suspend fun insertBookmark(anime: FavoriteAnimeEntity)
+
+    @Query("DELETE FROM favorite_anime WHERE id = :animeId")
+    suspend fun deleteBookmarkById(animeId: String)
 
     @Delete
-    suspend fun deleteBookmark(bookmark: FavoriteAnimeEntity)
+    suspend fun deleteBookmark(anime: FavoriteAnimeEntity)
 }

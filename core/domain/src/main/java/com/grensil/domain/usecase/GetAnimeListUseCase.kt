@@ -11,12 +11,24 @@ import javax.inject.Singleton
 class GetAnimeListUseCase @Inject constructor(
     private val localAnimeRepository: AnimeRepository
 ) {
-//    operator fun invoke() {
-//        userPrefRepository.getAnimeList()
-//    }
 
-    fun getAnimeList() : Flow<List<AnimeDto>> {
-        //return flowOf(emptyList())
+    suspend fun getAnimeList() : Flow<List<AnimeDto>> {
         return localAnimeRepository.getAnimeList()
+    }
+
+    suspend fun getBookmarkList() : Flow<List<AnimeDto>> {
+        return localAnimeRepository.getBookmarkList()
+    }
+
+    suspend fun addBookmark(animeDto: AnimeDto) {
+        localAnimeRepository.addBookmark(animeDto)
+    }
+
+    suspend fun removeBookmark(animeId: String) {
+        localAnimeRepository.removeBookmark(animeId)
+    }
+
+    suspend fun removeAllBookmarkList() {
+        localAnimeRepository.removeAnimeList()
     }
 }
