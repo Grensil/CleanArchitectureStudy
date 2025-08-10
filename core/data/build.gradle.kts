@@ -2,7 +2,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id(Plugins.kotlinKapt)
+    id(Plugins.kotlinKsp)
     id(Plugins.hiltAndroid)
 }
 
@@ -47,7 +47,7 @@ dependencies {
 
     // === Dependency Injection (Hilt) ===
     implementation(Dependencies.Hilt.android)
-    kapt(Dependencies.Hilt.compiler)
+    ksp(Dependencies.Hilt.compiler)
 
     // === Network ===
     implementation(Dependencies.Network.retrofit)
@@ -58,7 +58,7 @@ dependencies {
     // === Room ===
     implementation(Dependencies.Room.runtime)
     implementation(Dependencies.Room.ktx)
-    kapt(Dependencies.Room.compiler)
+    ksp(Dependencies.Room.compiler)
 
     // === Preferences ===
     implementation(Dependencies.AndroidX.preference)

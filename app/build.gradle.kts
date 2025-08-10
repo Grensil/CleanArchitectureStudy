@@ -2,7 +2,7 @@ plugins {
     id(Plugins.androidApplication)
     id(Plugins.kotlinAndroid)
     id(Plugins.kotlinCompose)
-    id(Plugins.kotlinKapt)
+    id(Plugins.kotlinKsp)
     id(Plugins.hiltAndroid)
 }
 
@@ -85,7 +85,7 @@ dependencies {
     // === Dependency Injection (Hilt) ===
     implementation(Dependencies.Hilt.android)
     implementation(Dependencies.Hilt.navigationCompose)
-    kapt(Dependencies.Hilt.compiler)
+    ksp(Dependencies.Hilt.compiler)
 
     // === Network ===
     implementation(Dependencies.Network.retrofit)

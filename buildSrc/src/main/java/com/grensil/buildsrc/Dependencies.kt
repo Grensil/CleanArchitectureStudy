@@ -2,6 +2,7 @@ object Versions {
     // Kotlin
     const val kotlin = "1.8.0"
     const val coroutines = "1.6.4"
+    const val ksp = "1.8.0-1.0.9" // KSP 추가
 
     // Android
     const val compileSdk = 35
@@ -57,6 +58,7 @@ object Versions {
     const val androidGradle = "8.1.2"
     const val kotlinPlugin = "1.8.0"
     const val hiltPlugin = "2.48"
+    const val kspPlugin = "1.8.0-1.0.9" // KSP 플러그인 추가
 }
 
 object Dependencies {
@@ -101,16 +103,12 @@ object Dependencies {
     object Navigation {
         const val compose = "androidx.navigation:navigation-compose:${Versions.navigation}"
         const val ui = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
-        const val fragment = "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     }
 
     object Room {
         const val runtime = "androidx.room:room-runtime:${Versions.room}"
         const val ktx = "androidx.room:room-ktx:${Versions.room}"
         const val compiler = "androidx.room:room-compiler:${Versions.room}"
-//        implementation("androidx.room:room-runtime:2.6.0")
-//        implementation("androidx.room:room-ktx:2.6.0")
-//        kapt("androidx.room:room-compiler:2.6.0")
     }
 
     object Network {
@@ -155,11 +153,9 @@ object Dependencies {
 
 object Plugins {
     const val androidApplication = "com.android.application"
-    const val androidLibrary = "com.android.library"
     const val kotlinAndroid = "org.jetbrains.kotlin.android"
     const val kotlinCompose = "org.jetbrains.kotlin.plugin.compose"
-    const val kotlinKapt = "kotlin-kapt"
-    const val kotlinJvm = "org.jetbrains.kotlin.jvm"
+    const val kotlinKsp = "com.google.devtools.ksp" // KSP 추가
     const val hiltAndroid = "com.google.dagger.hilt.android"
 }
 

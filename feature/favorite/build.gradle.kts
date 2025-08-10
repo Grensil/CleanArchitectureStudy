@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 
-    id(Plugins.kotlinKapt)
+    id(Plugins.kotlinKsp)
     id(Plugins.hiltAndroid)
 }
 
@@ -80,7 +80,7 @@ dependencies {
     // === Dependency Injection (Hilt) ===
     implementation(Dependencies.Hilt.android)
     implementation(Dependencies.Hilt.navigationCompose)
-    kapt(Dependencies.Hilt.compiler)
+    ksp(Dependencies.Hilt.compiler)
 
     // === Image Loading ===
     implementation(Dependencies.Image.coilCompose)

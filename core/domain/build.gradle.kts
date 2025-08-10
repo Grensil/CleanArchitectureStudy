@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id(Plugins.kotlinKapt)
+    id(Plugins.kotlinKsp)
     id(Plugins.hiltAndroid)
 }
 
@@ -56,5 +56,5 @@ dependencies {
     //hilt
     implementation(Dependencies.Hilt.android)
     implementation(Dependencies.Hilt.navigationCompose)
-    kapt(Dependencies.Hilt.compiler)
+    ksp(Dependencies.Hilt.compiler)
 }
