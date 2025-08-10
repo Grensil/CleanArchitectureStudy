@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.grensil.favorite.FavoriteScreen
 import com.grensil.home.HomeScreen
 
 @Composable
@@ -96,7 +97,7 @@ fun MainNavGraph(navController: NavHostController) {
             HomeScreen()
         }
         composable(TabScreen.Search.route) {
-            //SearchScreen(navController)
+            FavoriteScreen()
         }
         composable(TabScreen.Profile.route) {
             //ProfileScreen(navController)

@@ -1,33 +1,29 @@
-package com.grensil.home
+package com.grensil.favorite
 
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-
 import com.grensil.domain.dto.AnimeDto
 import com.grensil.domain.usecase.GetAnimeListUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-
+import javax.inject.Inject
 
 @HiltViewModel
-class AnimeListViewModel @Inject constructor(
+class FavoriteViewModel @Inject constructor(
     private val getAnimeListUseCase: GetAnimeListUseCase
 ) : ViewModel() {
 
-    private val _animeList = MutableStateFlow<List<AnimeDto>>(emptyList())
-    val animeList = _animeList.asStateFlow()
+    private val _bookmarkList = MutableStateFlow<List<AnimeDto>>(emptyList())
+    val bookmarkList = _bookmarkList.asStateFlow()
 
-    fun getAnimeList() = viewModelScope.launch {
-        getAnimeListUseCase.getAnimeList()
+    fun getBookmarkList() = viewModelScope.launch {
+        getAnimeListUseCase.getBookmarkList()
             .distinctUntilChanged()
             .collect {
-                _animeList.value = it
+                _bookmarkList.value = it
             }
     }
 

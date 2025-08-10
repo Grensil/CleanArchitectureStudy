@@ -1,11 +1,9 @@
-package com.grensil.home
+package com.grensil.favorite
 
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -31,25 +29,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.grensil.domain.dto.AnimeDto
-import kotlinx.coroutines.delay
-
 
 @Composable
-fun HomeScreen(viewModel: AnimeListViewModel = hiltViewModel()) {
+fun FavoriteScreen(viewModel: FavoriteViewModel = hiltViewModel()) {
 
     val insets = WindowInsets.statusBars.asPaddingValues()
     val statusBarHeight = with(LocalDensity.current) { insets.calculateTopPadding() }
 
-    val animeList by viewModel.animeList.collectAsStateWithLifecycle()
+    val animeList by viewModel.bookmarkList.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.getAnimeList()
+        viewModel.getBookmarkList()
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -71,6 +66,8 @@ fun HomeScreen(viewModel: AnimeListViewModel = hiltViewModel()) {
 
 @Composable
 fun AnimeItemView(animeData: AnimeDto, onBookmark : (AnimeDto) -> Unit) {
+
+    Log.d("Logd","animeData ${ animeData}")
 
     Row(modifier = Modifier
         .fillMaxWidth()
@@ -103,12 +100,4 @@ fun AnimeItemView(animeData: AnimeDto, onBookmark : (AnimeDto) -> Unit) {
 
         Spacer(modifier = Modifier.width(16.dp).fillMaxHeight())
     }
-}
-
-
-@Preview
-@Composable
-fun PreviewAnimeListScreen() {
-
-
 }

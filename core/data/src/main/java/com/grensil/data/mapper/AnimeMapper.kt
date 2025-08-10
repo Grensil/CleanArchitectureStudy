@@ -19,6 +19,7 @@ fun FavoriteAnimeEntity.toAnimeDto(): AnimeDto {
     return AnimeDto(
         anime_id = this.animeId,
         anime_name = this.name,
+        anime_img = this.anime_img,
         bookmarked = this.bookmarked
     )
 }
@@ -28,6 +29,7 @@ fun AnimeDto.toFavoriteAnimeEntity(): FavoriteAnimeEntity {
     return FavoriteAnimeEntity(
         animeId = this.anime_id,
         name = this.anime_name,
-        bookmarked = this.bookmarked?: false
+        anime_img = this.anime_img?: "",
+        bookmarked = this.bookmarked?: true /** 없으면 삭제 했기 때문에 존재하면 true **/
     )
 }

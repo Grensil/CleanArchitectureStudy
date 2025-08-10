@@ -10,5 +10,6 @@ data class FavoriteAnimeEntity(
     @ColumnInfo(name = "animeId") val animeId: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "bookmarked") val bookmarked : Boolean,
+    @ColumnInfo(name = "anime_img") val anime_img : String,
     @ColumnInfo(name = "addedAt") val addedAt: Long = System.currentTimeMillis()
 )
