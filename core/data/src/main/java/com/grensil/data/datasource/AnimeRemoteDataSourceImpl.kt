@@ -1,8 +1,8 @@
 package com.grensil.data.datasource
 
 import com.grensil.data.api.AnimeService
-import com.grensil.data.model.remote.AnimeItem
-import com.grensil.data.model.remote.AnimeListResponse
+import com.grensil.data.model.AnimeItem
+import com.grensil.data.model.AnimeListResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

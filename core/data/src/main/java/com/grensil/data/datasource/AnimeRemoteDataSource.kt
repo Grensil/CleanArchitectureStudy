@@ -1,7 +1,6 @@
 package com.grensil.data.datasource
 
-import com.grensil.data.model.remote.AnimeItem
-import com.grensil.data.model.remote.AnimeListResponse
+import com.grensil.data.model.AnimeItem
 import kotlinx.coroutines.flow.Flow
 
 interface AnimeRemoteDataSource {

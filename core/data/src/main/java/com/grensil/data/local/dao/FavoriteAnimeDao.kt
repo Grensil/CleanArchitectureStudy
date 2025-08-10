@@ -17,9 +17,6 @@ interface FavoriteAnimeDao {
     @Query("SELECT * FROM favorite_anime ORDER BY addedAt DESC")
     fun getAllFavorites(): Flow<List<FavoriteAnimeEntity>>
 
-    @Query("SELECT * FROM favorite_anime WHERE id = :characterId")
-    suspend fun getFavorite(characterId: Int): FavoriteAnimeEntity?
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBookmark(bookmark: FavoriteAnimeEntity)
 

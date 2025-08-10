@@ -29,4 +29,10 @@ class AnimeListViewModel @Inject constructor(
                 _animeList.value = it
             }
     }
+
+//    fun insertBookmark() {
+//        viewModelScope.launch {
+//            getAnimeListUseCase.insertBookmark()
+//        }
+//    }
 }

@@ -1,10 +1,13 @@
 package com.grensil.cleanarchitecturestudy
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -13,6 +16,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -26,11 +30,14 @@ import com.grensil.home.HomeScreen
 fun MainScreen() {
     val navController = rememberNavController()
 
+    val insets = WindowInsets.statusBars.asPaddingValues()
+    val statusBarHeight = with(LocalDensity.current) { insets.calculateTopPadding() }
+
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(top = statusBarHeight),
         bottomBar = { BottomNavigation(navController = navController) }
     ) { innerPadding ->
-        Box(Modifier.fillMaxSize().padding(bottom = innerPadding.calculateBottomPadding())) {
+        Box(Modifier.fillMaxSize().padding(bottom = innerPadding.calculateBottomPadding(), top = innerPadding.calculateTopPadding())) {
             MainNavGraph(
                 navController = navController
             )

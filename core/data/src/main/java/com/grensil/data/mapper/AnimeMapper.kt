@@ -2,7 +2,7 @@ package com.grensil.data.mapper
 
 
 import com.grensil.data.local.entity.FavoriteAnimeEntity
-import com.grensil.data.model.remote.AnimeItem
+import com.grensil.data.model.AnimeItem
 import com.grensil.domain.dto.AnimeDto
 import com.grensil.domain.dto.FavoriteAnimeDto
 
