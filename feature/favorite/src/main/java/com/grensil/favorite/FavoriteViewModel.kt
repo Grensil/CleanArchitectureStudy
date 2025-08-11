@@ -19,6 +19,9 @@ class FavoriteViewModel @Inject constructor(
     private val _bookmarkList = MutableStateFlow<List<AnimeDto>>(emptyList())
     val bookmarkList = _bookmarkList.asStateFlow()
 
+    private val _displayList = MutableStateFlow<List<AnimeDto>>(emptyList())
+    val displayList = _displayList.asStateFlow()
+
     fun getBookmarkList() = viewModelScope.launch {
         getAnimeListUseCase.getBookmarkList()
             .distinctUntilChanged()

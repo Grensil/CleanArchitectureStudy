@@ -6,12 +6,15 @@ import androidx.lifecycle.viewModelScope
 import com.grensil.domain.dto.AnimeDto
 import com.grensil.domain.usecase.GetAnimeListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -34,20 +37,13 @@ class SearchViewModel @Inject constructor(
         searchQuery
             .debounce(300)
             .distinctUntilChanged()
-            .onEach { query ->
-                searchAnimeList(query)
+            .flatMapLatest { query ->
+                getAnimeListUseCase.searchAnimeList(query)
+                    .distinctUntilChanged()
+                    .catch { emit(emptyList()) }
             }
+            .onEach { _searchList.value = it }
             .launchIn(viewModelScope)
-    }
-
-    fun searchAnimeList(search: String) = viewModelScope.launch {
-        getAnimeListUseCase.searchAnimeList(search)
-            .distinctUntilChanged()
-            .collect {
-                if (search == searchQuery.value) {
-                    _searchList.value = it
-                }
-            }
     }
 
     fun updateSearchQuery(query: String) {

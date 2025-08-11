@@ -1,5 +1,8 @@
 package com.grensil.cleanarchitecturestudy
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -160,7 +163,31 @@ fun MainNavGraph(navController: NavHostController) {
                 navArgument("animeName") { type = NavType.StringType },
                 navArgument("animeImg") { type = NavType.StringType },
                 navArgument("animeBookmarked") { type = NavType.BoolType }
-            )) { backStackEntry ->
+            ),
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(300)
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
+                    animationSpec = tween(300)
+                )
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { -it },
+                    animationSpec = tween(300)
+                )
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = tween(300)
+                )
+            }) { backStackEntry ->
 
             val animeId = backStackEntry.arguments?.getInt("animeId") ?: 0
             val animeName =
