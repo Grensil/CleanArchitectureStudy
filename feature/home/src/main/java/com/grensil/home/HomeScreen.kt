@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -35,17 +36,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.grensil.domain.dto.AnimeDto
 import kotlinx.coroutines.delay
-
+import java.net.URLEncoder
 
 @Composable
-fun HomeScreen(viewModel: AnimeListViewModel = hiltViewModel()) {
+fun HomeScreen(viewModel: AnimeListViewModel = hiltViewModel(), navController: NavHostController) {
 
-    val insets = WindowInsets.statusBars.asPaddingValues()
-    val statusBarHeight = with(LocalDensity.current) { insets.calculateTopPadding() }
-
+    val listState = rememberLazyListState()
     val animeList by viewModel.animeList.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -53,15 +54,23 @@ fun HomeScreen(viewModel: AnimeListViewModel = hiltViewModel()) {
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        LazyColumn() {
+        LazyColumn(state = listState, verticalArrangement = Arrangement.spacedBy(6.dp)) {
             items(animeList.size) {
-                AnimeItemView(animeData = animeList[it],
+                AnimeItemView(
+                    animeData = animeList[it],
                     onBookmark = { animeDto ->
-                        if(animeDto.bookmarked == true) {
+                        if (animeDto.bookmarked == true) {
                             viewModel.deleteBookmark(animeDto.anime_id)
-                        }
-                        else {
+                        } else {
                             viewModel.insertBookmark(animeDto.copy(bookmarked = true))
+                        }
+                    }, onDetailClick = { animeDto ->
+                        val encodedImg = URLEncoder.encode(animeDto.anime_img, "UTF-8")
+                        val encodedName = URLEncoder.encode(animeDto.anime_name, "UTF-8")
+
+                        navController.navigate("detail/${animeDto.anime_id}/${encodedName}/${encodedImg}/${animeDto.bookmarked}") {
+                            launchSingleTop = true
+                            restoreState = true
                         }
                     })
             }
@@ -70,38 +79,51 @@ fun HomeScreen(viewModel: AnimeListViewModel = hiltViewModel()) {
 }
 
 @Composable
-fun AnimeItemView(animeData: AnimeDto, onBookmark : (AnimeDto) -> Unit) {
+fun AnimeItemView(animeData: AnimeDto, onBookmark: (AnimeDto) -> Unit, onDetailClick : (AnimeDto) -> Unit) {
 
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .height(40.dp)
-        .clickable {
-            onBookmark(animeData)
-        }, verticalAlignment = Alignment.CenterVertically) {
-        Image(modifier = Modifier.size(40.dp),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(40.dp)
+            .clickable {
+                onDetailClick(animeData)
+            }, verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            modifier = Modifier.size(40.dp),
             painter = rememberAsyncImagePainter(animeData.anime_img),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
 
-        Spacer(modifier = Modifier.width(16.dp).fillMaxHeight())
+        Spacer(modifier = Modifier
+            .width(16.dp)
+            .fillMaxHeight())
 
-        Text(modifier = Modifier.weight(1f),
-            text = animeData.anime_name?:"",
+        Text(
+            modifier = Modifier.weight(1f),
+            text = animeData.anime_name ?: "",
             color = Color.Black,
             overflow = TextOverflow.Ellipsis,
-            maxLines = 1)
+            maxLines = 1
+        )
 
-        Spacer(modifier = Modifier.width(16.dp).fillMaxHeight())
+        Spacer(modifier = Modifier
+            .width(16.dp)
+            .fillMaxHeight())
 
         Image(
-            modifier = Modifier.size(32.dp),
-            imageVector = if(animeData.bookmarked == true) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+            modifier = Modifier.size(32.dp).clickable {
+                onBookmark(animeData)
+            },
+            imageVector = if (animeData.bookmarked == true) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
 
-        Spacer(modifier = Modifier.width(16.dp).fillMaxHeight())
+        Spacer(modifier = Modifier
+            .width(16.dp)
+            .fillMaxHeight())
     }
 }
 

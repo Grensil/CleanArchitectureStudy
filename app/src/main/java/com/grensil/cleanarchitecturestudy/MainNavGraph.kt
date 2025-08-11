@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -15,30 +16,51 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.grensil.detail.DetailScreen
+import com.grensil.domain.dto.AnimeDto
 import com.grensil.favorite.FavoriteScreen
 import com.grensil.home.HomeScreen
+import java.net.URLDecoder
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
 
-    val insets = WindowInsets.statusBars.asPaddingValues()
-    val statusBarHeight = with(LocalDensity.current) { insets.calculateTopPadding() }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val showBottomBarRoutes = listOf(
+        TabScreen.Home.route,
+        TabScreen.Search.route,
+        TabScreen.Profile.route
+    )
+    val shouldShowBottomBar = currentRoute in showBottomBarRoutes
 
     Scaffold(
-        modifier = Modifier.fillMaxSize().padding(top = statusBarHeight),
+        modifier = Modifier.fillMaxSize(),
         bottomBar = { BottomNavigation(navController = navController) }
     ) { innerPadding ->
-        Box(Modifier.fillMaxSize().padding(bottom = innerPadding.calculateBottomPadding(), top = innerPadding.calculateTopPadding())) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .padding(
+                    bottom = if (shouldShowBottomBar) innerPadding.calculateBottomPadding() else 0.dp,
+                    top = innerPadding.calculateTopPadding()
+                )
+        ) {
             MainNavGraph(
                 navController = navController
             )
@@ -57,20 +79,25 @@ fun BottomNavigation(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    NavigationBar(modifier = Modifier.fillMaxWidth().height(60.dp)) {
+    NavigationBar(modifier = Modifier
+        .fillMaxWidth()
+        .height(60.dp)) {
         tabs.forEach { tab ->
             NavigationBarItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp),
                 icon = {
                     Icon(
+                        modifier = Modifier.size(24.dp),
                         imageVector = tab.icon,
                         contentDescription = tab.title
                     )
                 },
-                label = { Text(tab.title) },
+                label = { Text(text = tab.title, fontSize = 12.sp) },
                 selected = currentRoute == tab.route,
                 onClick = {
                     navController.navigate(tab.route) {
-                        // 백스택 정리 - 같은 탭 중복 방지
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
@@ -94,13 +121,32 @@ fun MainNavGraph(navController: NavHostController) {
         startDestination = TabScreen.Home.route
     ) {
         composable(TabScreen.Home.route) {
-            HomeScreen()
+            HomeScreen(navController = navController)
         }
         composable(TabScreen.Search.route) {
-            FavoriteScreen()
+            FavoriteScreen(navController = navController)
         }
         composable(TabScreen.Profile.route) {
-            //ProfileScreen(navController)
+            //ProfileScreen(navController = navController)
+        }
+
+        composable(
+            route = "detail/{animeId}/{animeName}/{animeImg}/{animeBookmarked}",
+            arguments = listOf(
+                navArgument("animeId") { type = NavType.IntType },
+                navArgument("animeName") { type = NavType.StringType },
+                navArgument("animeImg") { type = NavType.StringType },
+                navArgument("animeBookmarked") { type = NavType.BoolType }
+            )) { backStackEntry ->
+
+            val animeId = backStackEntry.arguments?.getInt("animeId") ?: 0
+            val animeName = URLDecoder.decode(backStackEntry.arguments?.getString("animeName") ?: "", "UTF-8")
+            val animeImg = URLDecoder.decode(backStackEntry.arguments?.getString("animeImg") ?: "", "UTF-8")
+            val animeBookmarked = backStackEntry.arguments?.getBoolean("animeBookmarked") ?: false
+
+            val intentAnimeDto = AnimeDto(anime_id = animeId, anime_name = animeName, anime_img = animeImg, bookmarked = animeBookmarked)
+
+            DetailScreen(navController = navController, animeDto = intentAnimeDto)
         }
     }
 }

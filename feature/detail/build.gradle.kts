@@ -1,22 +1,22 @@
+
 plugins {
-    id(Plugins.androidApplication)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinCompose)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+
     id(Plugins.kotlinKsp)
     id(Plugins.hiltAndroid)
 }
 
 android {
-    namespace = AppConfig.applicationId
-    compileSdk = AppConfig.compileSdk
+    namespace = "com.grensil.detail"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = AppConfig.applicationId
-        minSdk = AppConfig.minSdk
-        targetSdk = AppConfig.targetSdk
-        versionCode = AppConfig.versionCode
-        versionName = AppConfig.versionName
-        testInstrumentationRunner = AppConfig.testInstrumentationRunner
+        minSdk = 24
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -28,33 +28,18 @@ android {
             )
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-
     kotlinOptions {
         jvmTarget = "11"
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4"
     }
 }
 
 dependencies {
-    // === 프로젝트 모듈 ===
-    implementation(project(":core:domain"))
-    implementation(project(":core:data"))
 
-    implementation(project(":feature:home"))
-    implementation(project(":feature:favorite"))
-    implementation(project(":feature:detail"))
+    implementation(project(":core:domain"))
 
     // === Compose BOM (버전 통일) ===
     implementation(platform(Dependencies.Compose.bom))
@@ -66,10 +51,6 @@ dependencies {
     implementation(Dependencies.AndroidX.lifecycleViewmodel)
     implementation(Dependencies.AndroidX.activityKtx)
 
-    // === Kotlin Coroutines ===
-    implementation(Dependencies.Kotlin.coroutinesCore)
-    implementation(Dependencies.Kotlin.coroutinesAndroid)
-
     // === Compose UI ===
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.uiGraphics)
@@ -80,37 +61,29 @@ dependencies {
     implementation(Dependencies.Compose.lifecycle)
     implementation(Dependencies.Compose.animation)
 
-    // === Navigation ===
-    implementation(Dependencies.Navigation.compose)
-    implementation(Dependencies.Accompanist.navigationAnimation)
-
-    // === Dependency Injection (Hilt) ===
-    implementation(Dependencies.Hilt.android)
-    implementation(Dependencies.Hilt.navigationCompose)
-    ksp(Dependencies.Hilt.compiler)
-
     // === Network ===
     implementation(Dependencies.Network.retrofit)
     implementation(Dependencies.Network.retrofitGson)
     implementation(Dependencies.Network.okhttp)
     implementation(Dependencies.Network.okhttpLogging)
 
+    // === Kotlin Coroutines ===
+    implementation(Dependencies.Kotlin.coroutinesCore)
+    implementation(Dependencies.Kotlin.coroutinesAndroid)
+
+    // === Dependency Injection (Hilt) ===
+    implementation(Dependencies.Hilt.android)
+    implementation(Dependencies.Hilt.navigationCompose)
+    ksp(Dependencies.Hilt.compiler)
+
     // === Image Loading ===
     implementation(Dependencies.Image.coilCompose)
-
-    // === Material Design ===
-    implementation(Dependencies.Material.material)
-
-    // === Debug Dependencies ===
-    debugImplementation(Dependencies.Compose.uiTooling)
-    debugImplementation(Dependencies.Compose.uiTestManifest)
-
-    // === Unit Testing ===
-    testImplementation(Dependencies.Test.Unit.junit)
+    implementation(Dependencies.Image.coil)
 
     // === Android Testing ===
     androidTestImplementation(Dependencies.Test.Android.junitExt)
     androidTestImplementation(Dependencies.Test.Android.espresso)
     androidTestImplementation(platform(Dependencies.Compose.bom))
     androidTestImplementation(Dependencies.Test.Android.composeUiTest)
+
 }
