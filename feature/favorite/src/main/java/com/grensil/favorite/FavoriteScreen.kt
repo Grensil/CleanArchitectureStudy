@@ -52,7 +52,7 @@ fun FavoriteScreen(viewModel: FavoriteViewModel = hiltViewModel(), navController
 
     Column(modifier = Modifier.fillMaxSize()) {
         LazyColumn(state = listState, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            items(animeList.size) {
+            items(animeList.size, key = { index -> animeList[index].anime_id }) {
                 AnimeItemView(animeData = animeList[it],
                     onBookmark = { animeDto ->
                         if(animeDto.bookmarked == true) {

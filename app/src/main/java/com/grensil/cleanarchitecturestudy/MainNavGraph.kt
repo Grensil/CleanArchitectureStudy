@@ -51,13 +51,19 @@ fun MainScreen() {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        bottomBar = { BottomNavigation(navController = navController) }
+        bottomBar = {
+            if (shouldShowBottomBar) {
+                BottomNavigation(navController = navController)
+            } else {
+                Box(modifier = Modifier.fillMaxWidth().height(60.dp))
+            }
+        }
     ) { innerPadding ->
         Box(
             Modifier
                 .fillMaxSize()
                 .padding(
-                    bottom = if (shouldShowBottomBar) innerPadding.calculateBottomPadding() else 0.dp,
+                    bottom = innerPadding.calculateBottomPadding(),
                     top = innerPadding.calculateTopPadding()
                 )
         ) {
@@ -79,9 +85,11 @@ fun BottomNavigation(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    NavigationBar(modifier = Modifier
-        .fillMaxWidth()
-        .height(60.dp)) {
+    NavigationBar(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+    ) {
         tabs.forEach { tab ->
             NavigationBarItem(
                 modifier = Modifier
@@ -98,13 +106,11 @@ fun BottomNavigation(navController: NavHostController) {
                 selected = currentRoute == tab.route,
                 onClick = {
                     navController.navigate(tab.route) {
+                        launchSingleTop = true
+                        restoreState = true
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
-                        // 탭 재선택시 동일한 인스턴스 재사용
-                        launchSingleTop = true
-                        // 상태 복원
-                        restoreState = true
                     }
                 }
             )
@@ -140,11 +146,18 @@ fun MainNavGraph(navController: NavHostController) {
             )) { backStackEntry ->
 
             val animeId = backStackEntry.arguments?.getInt("animeId") ?: 0
-            val animeName = URLDecoder.decode(backStackEntry.arguments?.getString("animeName") ?: "", "UTF-8")
-            val animeImg = URLDecoder.decode(backStackEntry.arguments?.getString("animeImg") ?: "", "UTF-8")
+            val animeName =
+                URLDecoder.decode(backStackEntry.arguments?.getString("animeName") ?: "", "UTF-8")
+            val animeImg =
+                URLDecoder.decode(backStackEntry.arguments?.getString("animeImg") ?: "", "UTF-8")
             val animeBookmarked = backStackEntry.arguments?.getBoolean("animeBookmarked") ?: false
 
-            val intentAnimeDto = AnimeDto(anime_id = animeId, anime_name = animeName, anime_img = animeImg, bookmarked = animeBookmarked)
+            val intentAnimeDto = AnimeDto(
+                anime_id = animeId,
+                anime_name = animeName,
+                anime_img = animeImg,
+                bookmarked = animeBookmarked
+            )
 
             DetailScreen(navController = navController, animeDto = intentAnimeDto)
         }
