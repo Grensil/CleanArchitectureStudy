@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,35 +30,23 @@ class SearchViewModel @Inject constructor(
     private val _searchList = MutableStateFlow<List<AnimeDto>>(emptyList())
     val searchList = _searchList.asStateFlow()
 
-    private val _animeList = MutableStateFlow<List<AnimeDto>>(emptyList())
-    val animeList = _animeList.asStateFlow()
-
     init {
-        getAnimeList()
-
-        viewModelScope.launch {
-            combine(
-                searchQuery,
-                animeList
-            ) { query, bookmarks ->
-                if (query.isEmpty()) {
-                    bookmarks
-                } else {
-                    bookmarks.filter { anime ->
-                        anime.anime_name.contains(query, ignoreCase = true)
-                    }
-                }
-            }.collect { filtered ->
-                _searchList.value = filtered
+        searchQuery
+            .debounce(300)
+            .distinctUntilChanged()
+            .onEach { query ->
+                searchAnimeList(query)
             }
-        }
+            .launchIn(viewModelScope)
     }
 
-    fun getAnimeList() = viewModelScope.launch {
-        getAnimeListUseCase.getAnimeList()
+    fun searchAnimeList(search: String) = viewModelScope.launch {
+        getAnimeListUseCase.searchAnimeList(search)
             .distinctUntilChanged()
             .collect {
-                _animeList.value = it
+                if (search == searchQuery.value) {
+                    _searchList.value = it
+                }
             }
     }
 
