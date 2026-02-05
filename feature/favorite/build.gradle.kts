@@ -67,12 +67,6 @@ dependencies {
     implementation(Dependencies.Compose.lifecycle)
     implementation(Dependencies.Compose.animation)
 
-    // === Network ===
-    implementation(Dependencies.Network.retrofit)
-    implementation(Dependencies.Network.retrofitGson)
-    implementation(Dependencies.Network.okhttp)
-    implementation(Dependencies.Network.okhttpLogging)
-
     // === Kotlin Coroutines ===
     implementation(Dependencies.Kotlin.coroutinesCore)
     implementation(Dependencies.Kotlin.coroutinesAndroid)
@@ -84,7 +78,6 @@ dependencies {
 
     // === Image Loading ===
     implementation(Dependencies.Image.coilCompose)
-    implementation(Dependencies.Image.coil)
 
     // === Android Testing ===
     androidTestImplementation(Dependencies.Test.Android.junitExt)

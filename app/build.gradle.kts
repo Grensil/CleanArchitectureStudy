@@ -90,17 +90,8 @@ dependencies {
     implementation(Dependencies.Hilt.navigationCompose)
     ksp(Dependencies.Hilt.compiler)
 
-    // === Network ===
-    implementation(Dependencies.Network.retrofit)
-    implementation(Dependencies.Network.retrofitGson)
-    implementation(Dependencies.Network.okhttp)
-    implementation(Dependencies.Network.okhttpLogging)
-
     // === Image Loading ===
     implementation(Dependencies.Image.coilCompose)
-
-    // === Material Design ===
-    implementation(Dependencies.Material.material)
 
     // === Debug Dependencies ===
     debugImplementation(Dependencies.Compose.uiTooling)

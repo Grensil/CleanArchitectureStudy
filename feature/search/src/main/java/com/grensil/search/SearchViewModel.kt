@@ -33,16 +33,26 @@ class SearchViewModel @Inject constructor(
     private val _searchList = MutableStateFlow<List<AnimeDto>>(emptyList())
     val searchList = _searchList.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
     init {
         searchQuery
             .debounce(300)
             .distinctUntilChanged()
+            .onEach { _isLoading.value = it.isNotEmpty() }
             .flatMapLatest { query ->
                 getAnimeListUseCase.searchAnimeList(query)
                     .distinctUntilChanged()
-                    .catch { emit(emptyList()) }
+                    .catch {
+                        _isLoading.value = false
+                        emit(emptyList())
+                    }
             }
-            .onEach { _searchList.value = it }
+            .onEach {
+                _searchList.value = it
+                _isLoading.value = false
+            }
             .launchIn(viewModelScope)
     }
 
@@ -57,9 +67,5 @@ class SearchViewModel @Inject constructor(
 
     fun deleteBookmark(animeId: Int) = viewModelScope.launch {
         getAnimeListUseCase.removeBookmark(animeId)
-    }
-
-    fun deleteAllBookmark() = viewModelScope.launch {
-        getAnimeListUseCase.removeAllBookmarkList()
     }
 }

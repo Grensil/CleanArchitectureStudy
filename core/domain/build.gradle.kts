@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.grensil.data"
+    namespace = "com.grensil.domain"
     compileSdk = 35
 
     defaultConfig {
@@ -35,26 +35,13 @@ android {
 }
 
 dependencies {
-
-    implementation(Dependencies.AndroidX.coreKtx)
-
-    //kotlin
+    // === Kotlin ===
     implementation(Dependencies.Kotlin.stdlib)
 
-    //Coroutines
-    implementation(Dependencies.Kotlin.coroutinesAndroid)
+    // === Coroutines (순수 코틀린) ===
+    implementation(Dependencies.Kotlin.coroutinesCore)
 
-    //retrofit
-    implementation(Dependencies.Network.retrofit)
-    implementation(Dependencies.Network.retrofitGson)
-
-    //okHttp
-    implementation(Dependencies.Network.okhttp)
-    implementation(Dependencies.Network.okhttpLogging)
-    implementation(Dependencies.Network.okhttpUrlConnection)
-
-    //hilt
+    // === Dependency Injection (Hilt) ===
     implementation(Dependencies.Hilt.android)
-    implementation(Dependencies.Hilt.navigationCompose)
     ksp(Dependencies.Hilt.compiler)
 }

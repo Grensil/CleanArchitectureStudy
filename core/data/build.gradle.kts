@@ -60,12 +60,6 @@ dependencies {
     implementation(Dependencies.Room.ktx)
     ksp(Dependencies.Room.compiler)
 
-    // === Preferences ===
-    implementation(Dependencies.AndroidX.preference)
-
-    // === Material Design ===
-    implementation(Dependencies.Material.material)
-
     // === Unit Testing ===
     testImplementation(Dependencies.Test.Unit.junit)
     testImplementation(Dependencies.Test.Unit.mockk)

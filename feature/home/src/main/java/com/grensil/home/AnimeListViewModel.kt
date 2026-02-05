@@ -23,12 +23,26 @@ class AnimeListViewModel @Inject constructor(
     private val _animeList = MutableStateFlow<List<AnimeDto>>(emptyList())
     val animeList = _animeList.asStateFlow()
 
-    fun getAnimeList() = viewModelScope.launch {
-        getAnimeListUseCase.getAnimeList()
-            .distinctUntilChanged()
-            .collect {
-                _animeList.value = it
-            }
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
+    init {
+        getAnimeList()
+    }
+
+    private fun getAnimeList() = viewModelScope.launch {
+        try {
+            _isLoading.value = true
+            getAnimeListUseCase.getAnimeList()
+                .distinctUntilChanged()
+                .collect {
+                    _animeList.value = it
+                    _isLoading.value = false
+                }
+        } catch (_: Exception) {
+            _isLoading.value = false
+            _animeList.value = emptyList()
+        }
     }
 
     fun insertBookmark(animeDto: AnimeDto) = viewModelScope.launch {
@@ -37,9 +51,5 @@ class AnimeListViewModel @Inject constructor(
 
     fun deleteBookmark(animeId: Int) = viewModelScope.launch {
         getAnimeListUseCase.removeBookmark(animeId)
-    }
-
-    fun deleteAllBookmark() = viewModelScope.launch {
-        getAnimeListUseCase.removeAllBookmarkList()
     }
 }
